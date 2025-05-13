@@ -29,8 +29,8 @@ def show_price(message):
         else:
             bot.reply_to(message, 'نام ارز یافت نشد. مطمئن شو اسم کاملشو به انگلیسی وارد کردی.')
     except Exception as e:
+        bot.reply_to(message, f'خطا: {e}')
         print(f"Error: {e}")
-        bot.reply_to(message, 'خطا در دریافت اطلاعات.')
 
 keep_alive()
 bot.infinity_polling()
