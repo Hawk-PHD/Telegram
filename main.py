@@ -22,10 +22,14 @@ def show_price(message):
         return
 
     url = f'https://api.coingecko.com/api/v3/simple/price?ids={symbol_input}&vs_currencies=usd'
+    headers = {
+        'User-Agent': 'Mozilla/5.0'
+    }
+
     print(f"Final URL: {url}")
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         print(f"Response status: {response.status_code}")
         print(f"Response text: {response.text}")
 
