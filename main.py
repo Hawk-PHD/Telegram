@@ -2,7 +2,7 @@ import telebot
 import requests
 from keep_alive import keep_alive
 
-TOKEN = '7576436917:AAFkiGPj7tqfk1pgVvBh5rsVKwCRO9OvbKY'
+TOKEN = '7763235408:AAH6kHMOmqWLD-dm_zt_PBSjDg2mVrp8ki8'
 bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
@@ -30,7 +30,7 @@ def show_price(message):
             bot.reply_to(message, 'نام ارز یافت نشد. مطمئن شو اسم کاملشو به انگلیسی وارد کردی.')
     except Exception as e:
         print(f"Error: {e}")
-        bot.reply_to(message, 'خطا در دریافت اطلاعات از.')
+        bot.reply_to(message, 'خطا در دریافت اطلاعات.')
 
 keep_alive()
 bot.infinity_polling()
