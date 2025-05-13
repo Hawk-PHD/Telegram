@@ -15,22 +15,36 @@ def send_help(message):
 
 @bot.message_handler(func=lambda message: True)
 def show_price(message):
-    symbol = message.text.lower().strip()
+    symbol_input = message.text.lower().strip()
 
-    url = f'https://api.coingecko.com/api/v3/simple/price?ids={symbol}&vs_currencies=usd'
+    url = f'https://api.coingecko.com/api/v3/simple/price?ids={symbol_input}&vs_currencies=usd'
+    print(f"Final URL: {url}")  # چاپ لینک نهایی برای بررسی
 
     try:
         response = requests.get(url)
-        data = response.json()
 
-        if symbol in data:
-            price = data[symbol]['usd']
-            bot.reply_to(message, f"قیمت {symbol.capitalize()} الان: {price} دلار")
+        # بررسی اینکه آیا پاسخ معتبره
+        if response.status_code != 200:
+            bot.reply_to(message, f"پاسخ نامعتبر از سرور (status {response.status_code})")
+            print(f"Bad response: {response.text}")
+            return
+
+        # بررسی اینکه آیا JSON قابل پردازشه
+        try:
+            data = response.json()
+        except Exception as e:
+            bot.reply_to(message, f'خطا در تبدیل داده: {e}')
+            print(f"Raw text: {response.text}")
+            return
+
+        if symbol_input in data:
+            price = data[symbol_input]['usd']
+            bot.reply_to(message, f"قیمت {symbol_input.capitalize()} الان: {price} دلار")
         else:
-            bot.reply_to(message, 'نام ارز یافت نشد. مطمئن شو اسم کاملشو به انگلیسی وارد کردی.')
+            bot.reply_to(message, 'ارز پیدا نشد. لطفاً اسم کامل انگلیسی مثل bitcoin بنویس.')
+
     except Exception as e:
         bot.reply_to(message, f'خطا: {e}')
         print(f"Error: {e}")
-
 keep_alive()
 bot.infinity_polling()
